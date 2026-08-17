@@ -1,0 +1,8 @@
+quote_id,verdict,reason,notes
+q1_linewrap,VERIFIED,,exact match once whitespace/line-wrap differences are normalized away
+q2_elision,VERIFIED,,elided quote (\"...\") matched as two ordered segments against non-contiguous text
+q3_ligature_accent,VERIFIED,,source has the raw ligature \"ﬁrst\" and precomposed accent \"café\"; NFKD decomposition equates them with the plain-ASCII quote wording
+q4_too_short,NOT_VERIFIABLE,TOO_SHORT,single word below --min-segment-chars; present in source but not a meaningful substring test
+q5_fuzzy,FUZZY,,source has a deliberate one-character OCR-style substitution (\"matchxng\" for \"matching\"); similarity clears the 0.95 threshold
+q6_not_found,NOT_FOUND,,phrase genuinely does not appear in the source
+q7_source_defect,NOT_VERIFIABLE,damaged scan; no corrected file on disk,override_reason column forces NOT_VERIFIABLE instead of NOT_FOUND for a source known in advance to have no sound extraction

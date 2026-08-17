@@ -1,0 +1,8 @@
+quote_id,exact_quote,override_reason
+q1_linewrap,hobbyist gardeners benefit from structured access to seasonal planting guides,
+q2_elision,participants ... typically needed about six growing seasons of hands-on trial,
+q3_ligature_accent,first four samples were traced to a single cafe of origin,
+q4_too_short,inert,
+q5_fuzzy,Some sentences contain deliberate noise to test fuzzy matching,
+q6_not_found,this exact phrase does not exist anywhere in the source text,
+q7_source_defect,this quote cites a source known to have no sound extraction,damaged scan; no corrected file on disk

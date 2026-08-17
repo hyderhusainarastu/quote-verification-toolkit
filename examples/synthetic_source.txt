@@ -1,0 +1,21 @@
+SYNTHETIC EXAMPLE TEXT -- fabricated for this skill's documentation only.
+Not a real publication, not real research findings, not a real citation.
+
+Chapter Three: Synthetic Findings
+
+Researchers have long argued that hobbyist gardeners
+benefit from structured access to seasonal planting guides.
+The survey found that participants, after joining a local
+cooperative, typically needed about six growing seasons of
+hands-on trial before achieving consistent yields in an
+unfamiliar climate.
+
+A separate note observes that the ﬁrst four samples were
+traced to a single café of origin, which the reviewers
+described as a curious coincidence rather than a meaningful
+pattern.
+
+The word "inert" appears once, in isolation, as a test case.
+
+Some sentences contain deliberate noise to test fuzzy matchxng,
+since real OCR output occasionally substitutes a character.
