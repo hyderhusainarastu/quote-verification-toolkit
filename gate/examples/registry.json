@@ -1,0 +1,33 @@
+{
+  "entries": {
+    "book:garden-survey": {
+      "key": "book:garden-survey",
+      "grade": "A",
+      "source": "Book",
+      "label": "Invented Survey of Hobby Gardens, ch. 3",
+      "locator": {"page": "41"},
+      "screenshot": "sources/garden-survey-p41.txt",
+      "via": null,
+      "quote": "hobbyist gardeners benefit from structured access to seasonal planting guides",
+      "text_file": "sources/garden-survey.txt",
+      "url": "https://example.org/garden-survey"
+    },
+    "web:seed-notes": {
+      "key": "web:seed-notes",
+      "grade": "B",
+      "source": "Web",
+      "label": "Invented seed-saving notes",
+      "locator": {"page": ""},
+      "via": {"work": "Invented Seed Notes, 2nd ed.", "page": "7"},
+      "quote": "the first four samples were traced to a single cafe of origin",
+      "text_file": "sources/garden-survey.txt",
+      "url": "https://example.org/seed-notes"
+    },
+    "report:soil-lead": {
+      "key": "report:soil-lead",
+      "grade": "D",
+      "source": "Report",
+      "label": "Invented soil report (not seen)"
+    }
+  }
+}

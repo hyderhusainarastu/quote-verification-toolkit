@@ -1,6 +1,6 @@
 ---
 name: quote-verification-toolkit
-description: Verify that quoted excerpts actually appear in their source texts, tolerant of PDF line-wraps, whitespace collapse, Unicode ligatures/accents, SGML entities, and mid-quote elision. Invoke before treating any direct quotation as citation-safe -- e.g. before a manuscript goes to a reviewer, before a quote ledger is marked verified, or whenever a mechanical substring check reports a quote as missing from its source and that result needs to be trusted or distrusted.
+description: Check that quoted excerpts appear in their source text despite PDF line-wraps, ligatures, accents and mid-quote elision. Use before treating a direct quotation as citation-safe, or when a plain substring check says a quote is missing.
 ---
 
 # Quote Verification Toolkit
@@ -336,3 +336,9 @@ additional columns the summary file doesn't (`witness_file`, `similarity`,
 which is always today's date and so can never match a static file byte for
 byte). Compare `quote_id`/`verdict`/`reason` between the two rather than
 diffing the files directly.
+
+## Build gate and anchoring (optional)
+
+For a CI gate over a registry of quotes and citations, see `gate/README.md`
+(`qvt-gate cites | quotes | manifest | scrub`). To find a quote again after the
+source text has been re-extracted, use `scripts/anchoring.py`.

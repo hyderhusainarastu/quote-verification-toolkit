@@ -4,6 +4,20 @@ Check that a quoted excerpt actually appears in the source text it's
 attributed to -- reliably, even when the source text is a PDF extraction
 full of line wraps, ligatures, accented letters, or a mid-quote ellipsis.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+## Works with
+
+| Surface | How | Status |
+|---|---|---|
+| Command line (any tool that can run Python 3.10+) | `scripts/quote_verify.py`, `gate/qvt-gate`; standard library only | tested 2026-11-23, Python 3.14 |
+| Claude Code | native skill (`SKILL.md`) via `install.sh --claude` | not tested |
+| Codex | native skill via `.agents/skills` (`install.sh --agents`) | not tested |
+| Gemini CLI | native skill via `.agents/skills`, pointer in `GEMINI.md` | not tested |
+| Cursor | native skill via `.agents/skills`; reads `AGENTS.md` | not tested |
+| Copilot | pointer to `AGENTS.md` | not tested |
+| ChatGPT / Claude.ai / Gemini (chat) | prompt: paste `PROMPT.md` (or `PROMPT.short.md`) | not tested |
+
 ## What it does
 
 A plain `if quote in source_text` check fails constantly on real extracted
@@ -41,21 +55,28 @@ about the *file you checked it against*. A tool that conflates them turns
 missing or low-quality source text into false accusations against
 perfectly accurate quotations.
 
-## Installation
+## Quick start
 
-This is an Agent Skill: a self-contained folder built around a `SKILL.md`
-file that describes the skill's purpose and usage, following the
-portable `SKILL.md` convention. To install it:
+```sh
+git clone https://github.com/hyderhusainarastu/quote-verification-toolkit
+cd quote-verification-toolkit
+python3 scripts/quote_verify.py --help        # use it as a plain CLI, no install
+./install.sh --claude                         # ~/.claude/skills/quote-verification-toolkit
+./install.sh --agents --project .             # .agents/skills (Codex, Cursor, Gemini CLI)
+./install.sh --gemini --cursor --copilot --project .   # pointer blocks only
+./install.sh --uninstall --claude --agents    # removes only what it installed
+```
 
-- **Claude Code**: copy this folder into `.claude/skills/quote-verification-toolkit/`
-  in your project (or the equivalent user-level skills directory).
-- **Any other agent runtime that supports the `SKILL.md` convention**: copy
-  this folder into that runtime's skills directory. The package is
-  self-contained -- `SKILL.md` plus a standalone stdlib-only Python script
-  -- and doesn't depend on Claude Code specifically.
+With no flag, `install.sh` prints help and changes nothing. It symlinks by
+default (`--copy` to copy), never overwrites a path it does not own, and has
+`--dry-run`. For a chat tool with no file access, paste `PROMPT.md`.
 
-You can also skip the "agent skill" framing entirely and just use
-`scripts/quote_verify.py` as a normal command-line tool (see below).
+## Use from an AI coding agent
+
+`AGENTS.md` is the single instruction file; `CLAUDE.md`, `GEMINI.md` and
+`.github/copilot-instructions.md` only point at it. An agent should run
+`scripts/quote_verify.py` before calling a quotation verified, and treat FUZZY,
+NOT_FOUND and NOT_VERIFIABLE as needing a human look.
 
 ## Worked example (synthetic data)
 
@@ -170,6 +191,69 @@ spans, why elision markers must be protected before any markup stripping
 runs, and the witness-file resolution procedure for sources that have more
 than one extracted-text variant.
 
+## Build gate
+
+`gate/` is a CI gate for a registry of quotes and citations (Python standard
+library). `qvt-gate cites` checks evidence grades (A seen page image, B seen
+public full text, C snippet only, D not seen, never displayed) and fails on
+unknown or grade D keys. `qvt-gate quotes` does a byte-exact check after NFC
+or NFKC and hyphen rejoin, reports the first difference and flags Latin/Greek
+or Cyrillic look-alike letters. `qvt-gate manifest freeze|verify` keeps a
+SHA-256 manifest of source files. `qvt-gate scrub --check` enforces a quote word
+cap, strips access-gated URLs and drops grade D. See `gate/README.md`.
+
+```
+$ gate/qvt-gate quotes --registry gate/examples/registry.json
+quotes: checked 2 quote(s) with NFC
+quotes: ok
+```
+
+## Anchoring
+
+`scripts/anchoring.py` finds a quote again after the source is re-extracted,
+using the quote plus a little text before and after it (`find_quote_offset`,
+`rebind_anchor`). A match in more than one block is reported as unanchored, not
+guessed.
+
+## Tests
+
+```
+python3 -m unittest discover -s tests -t .
+```
+
+Offline. Includes a test that diffs the example run against
+`examples/synthetic_results_expected.csv`.
+
+## How it differs
+
+It is not a plagiarism or similarity detector, and it does not look sources up.
+Related tools check different things: `hallucinated-citation-checker` checks
+whether cited references exist, and `scholarly-citation-resolver` resolves them
+to records. This toolkit checks the words inside the quotation against text you
+already have.
+
+## Limits
+
+- It tests presence of words in a file, not whether the quote is used fairly.
+- Fuzzy matching is a similarity ratio and can pass a near-miss; read FUZZY rows.
+- Only text you supply is checked; scanned pages need OCR first.
+- Only the command-line path is tested; platform rows marked "not tested" are
+  untested.
+- The `scrub` URL rules are patterns; review the result before publishing.
+
+## Related
+
+- [hallucinated-citation-checker](https://github.com/hyderhusainarastu/hallucinated-citation-checker): does the cited reference exist at all
+- [scholarly-citation-resolver](https://github.com/hyderhusainarastu/scholarly-citation-resolver): resolve citations to records
+
+## Keywords
+
+quote verification, citation checking, fact-checking, PDF text extraction, fuzzy
+match, research integrity, CI build gate, SHA-256 manifest, agent skill
+
 ## License
 
 MIT. See `LICENSE`.
+
+---
+Part of palimnote-skills - more at https://github.com/hyderhusainarastu

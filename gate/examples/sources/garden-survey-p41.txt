@@ -1,0 +1,1 @@
+Invented page image placeholder (a real registry points at an image file).

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "qvt-gate quote registry",
+  "type": "object",
+  "required": ["entries"],
+  "additionalProperties": false,
+  "properties": {
+    "allowed_sources": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Source kinds an entry may use. Default: Book, Journal, Archive, Web, Report, Other."
+    },
+    "entries": {
+      "type": "object",
+      "propertyNames": {"pattern": "^[a-z]+:[a-z0-9.-]+$"},
+      "additionalProperties": {"$ref": "#/$defs/entry"}
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": ["key", "grade"],
+      "additionalProperties": false,
+      "properties": {
+        "key": {"type": "string", "description": "Must equal the object key."},
+        "grade": {
+          "enum": ["A", "B", "C", "D"],
+          "description": "A seen on a page image; B seen in a public full text; C snippet only; D not seen (never displayed)."
+        },
+        "source": {"type": "string"},
+        "label": {"type": "string", "description": "What the reader sees."},
+        "locator": {"type": "object", "properties": {"page": {"type": ["string", "number", "null"]}}},
+        "screenshot": {"type": ["string", "null"], "description": "Page image path; required for grade A."},
+        "via": {
+          "type": ["object", "null"],
+          "required": ["work", "page"],
+          "properties": {"work": {"type": "string"}, "page": {"type": "string"}},
+          "description": "Required for grade B, null otherwise."
+        },
+        "quote": {"type": "string"},
+        "text_file": {"type": "string", "description": "Text the quote is checked against."},
+        "url": {"type": ["string", "null"]},
+        "note": {"type": "string"}
+      }
+    }
+  }
+}
